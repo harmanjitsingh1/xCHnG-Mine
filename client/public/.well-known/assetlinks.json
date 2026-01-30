@@ -1,0 +1,16 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.xchng.app",
+      "sha256_cert_fingerprints": [
+        "68:86:81:48:AD:6E:B4:BE:0E:A4:24:3B:A4:6E:6C:9A:C0:89:E7:CE:10:98:04:8E:DD:BA:DF:E7:BF:99:17:F5",
+        "83:D9:24:32:87:5F:FC:7A:D9:71:31:36:C5:97:4A:10:A7:24:06:7E:E9:2C:B5:3E:E9:8A:87:F7:6D:FB:45:0C"
+      ]
+    }
+  }
+]
