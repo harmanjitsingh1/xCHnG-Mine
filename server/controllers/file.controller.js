@@ -112,7 +112,7 @@ export const saveMetadata = async (req, res) => {
       message: `${req?.user?.username} requested to upload an item.`,
       request: newRequest?._id,
     });
-
+    
     await sendAdminEmails("New Item Uploaded by User", "fileRequest", {
       me: req.user?._id,
       user: {
@@ -122,6 +122,7 @@ export const saveMetadata = async (req, res) => {
       },
       type: "upload",
       file: fileDoc,
+      requestId: newRequest?._id,
       requestDate: new Date(newRequest?.createdAt).toLocaleString("en-IN", {
         year: "numeric",
         month: "long",
