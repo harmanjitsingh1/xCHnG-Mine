@@ -61,7 +61,7 @@ export const welcomeUser = ({ username, date = Date.now() }) => {
         <p>Once approved, you’ll receive a confirmation email and get full access to all features of xCHnG.</p>
         <a href="${link}" target="_blank" class="btn">Visit xCHnG</a>
         <p>
-          Please contact admin at +91 9849284739 for any questions or concerns.
+          Please contact admin for any questions or concerns.
         </p>
         
       </div>

@@ -33,6 +33,7 @@ import UserRequests from "@/pages/UserRequests";
 import FindUser from "./pages/admin/FindUser";
 import EditUserDetails from "./pages/admin/EditUserDetails";
 import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
 
 const router = createBrowserRouter([
   {
@@ -91,6 +92,7 @@ const router = createBrowserRouter([
       },
 
       { path: "/contact", element: <Contact /> },
+      { path: "/faq", element: <FAQ /> },
       { path: "/reset-password", element: <ResetPassword /> },
       { path: "*", element: <NotFound /> },
     ],

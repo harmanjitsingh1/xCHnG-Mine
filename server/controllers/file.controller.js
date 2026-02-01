@@ -9,8 +9,8 @@ import { sendAdminEmails } from "../utils/sendAdminEmails.js";
 
 export const getUploadUrl = async (req, res) => {
   try {
-    const { fileName, fileType } = req.body;
-    if (!fileName || !fileType) {
+    const { fileName } = req.body;
+    if (!fileName) {
       return res.status(400).json({ success: false, message: "Missing info" });
     }
 

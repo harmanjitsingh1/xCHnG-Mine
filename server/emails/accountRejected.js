@@ -23,7 +23,7 @@ export const accountRejected = ({ username, reason = "Not specified" }) => {
         <p>You can update your details and request again later.</p>
         <a href="${link}" target="_blank" class="btn">Visit xCHnG</a>
         <p>
-          Please contact admin at +91 9849284739 for any questions or concerns.
+          Please contact admin for any questions or concerns.
         </p>
       </div>
       <div class="footer">© 2025 xCHnG</div>

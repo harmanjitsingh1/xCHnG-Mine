@@ -8,6 +8,7 @@ import requestRoute from "./routes/request.routes.js";
 import notificationRoute from "./routes/notification.routes.js";
 import adminRoute from "./routes/admin.routes.js";
 import fileRoute from "./routes/file.routes.js";
+import supportRoute from "./routes/support.routes.js";
 
 const PORT = process.env.PORT;
 
@@ -48,6 +49,9 @@ app.use("/api/v1/admin", adminRoute);
 
 // File Routes
 app.use("/api/v1/file", fileRoute);
+
+// Support Routes
+app.use("/api/v1/support", supportRoute);
 
 app.get("/", (req, res) => {
   res.status(200).send("Backend is running....");

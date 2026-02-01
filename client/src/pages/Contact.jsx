@@ -1,10 +1,16 @@
 import React, { useState, useRef } from "react";
 import { Loader2, Upload, X, Image as ImageIcon, Send } from "lucide-react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom"; // Assuming react-router-dom
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchUploadUrlsThunk,
+  submitSupportTicket,
+} from "@/store/thunks/support.thunk";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -13,8 +19,9 @@ const ContactUs = () => {
     message: "",
   });
   const [screenshots, setScreenshots] = useState([]);
-  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef(null);
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.support);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,9 +30,9 @@ const ContactUs = () => {
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
-      // Validate: Max 2 files total
-      if (screenshots.length + newFiles.length > 2) {
-        alert("You can only upload a maximum of 2 screenshots.");
+      // Validate: Max 3 files total
+      if (screenshots.length + newFiles.length > 3) {
+        toast.error("You can only upload a maximum of 3 screenshots.");
         return;
       }
       setScreenshots((prev) => [...prev, ...newFiles]);
@@ -36,23 +43,71 @@ const ContactUs = () => {
     setScreenshots((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Form Data:", formData);
-      console.log("Files:", screenshots);
-      setLoading(false);
-      toast.success("Ticket submitted successfully!");
-    }, 2000);
+    if (
+      formData.username.trim() === "" ||
+      formData.email.trim() === "" ||
+      formData.message.trim() === ""
+    ) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    try {
+      let submissionData = { ...formData };
+
+      if (screenshots && screenshots.length > 0) {
+        const files = screenshots.map((f) => f.name);
+        const res = await dispatch(fetchUploadUrlsThunk({files, email: formData.email}));
+
+        if (!res?.payload?.success) {
+          toast.error(res?.payload?.response?.message || res?.payload?.message || "Failed to get upload URLs");
+          return;
+        }
+
+        const uploadUrls = res?.payload?.data.map((item) => item?.uploadUrl);
+
+        // upload all files concurrently and await completion
+        await Promise.all(
+          screenshots.map((file, index) =>
+            axios.put(uploadUrls[index], file, {
+              headers: { "Content-Type": file.type },
+              onUploadProgress: (progressEvent) => {
+                // optional: track progress if needed
+                const prog = (progressEvent.loaded / progressEvent.total) * 100;
+              },
+            }),
+          ),
+        );
+
+        submissionData = {
+          ...submissionData,
+          screenshots: res.payload.data.map((item) => ({
+            fileName: item.fileName,
+            fileKey: item.fileKey,
+          })),
+        };
+      }
+
+      const ticketRes = await dispatch(submitSupportTicket(submissionData));
+
+      if (ticketRes?.payload?.success) {
+        toast.success("Ticket submitted successfully!");
+        setFormData({ username: "", email: "", message: "" });
+        setScreenshots([]);
+      } else {
+        toast.error(ticketRes?.payload?.message || "Failed to submit ticket");
+      }
+    } catch (error) {
+      console.error("Contact submit error:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-6 bg-white">
-      {/* Increased max-width slightly to max-w-md for better textarea/upload UX, 
-          but kept the vibe identical */}
       <div className="w-full max-w-md flex flex-col items-center space-y-8">
         {/* Title + Subtext */}
         <div className="text-center space-y-1">
@@ -121,12 +176,12 @@ const ContactUs = () => {
             <label className="text-sm text-gray-800 mb-1 px-2 font-medium flex justify-between">
               <span>Screenshots (Optional)</span>
               <span className="text-gray-400 text-xs mt-0.5">
-                {screenshots.length}/2
+                {screenshots.length}/3
               </span>
             </label>
 
             {/* Upload Area */}
-            {screenshots.length < 2 && (
+            {screenshots.length < 3 && (
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className="w-full border-2 border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 hover:border-gray-400 transition-all group mb-3"

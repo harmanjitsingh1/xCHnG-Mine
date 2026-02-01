@@ -74,7 +74,7 @@ export const resetPasswordCode = ({ username, otp }) => {
         <p>This OTP is valid for the next <b>10 minutes</b>. Do not share it with anyone for security reasons.</p>
         <p>If you didn’t request this, you can safely ignore this email.</p>
         <p>
-          Please contact admin at +91 9849284739 for any questions or concerns.
+          Please contact admin for any questions or concerns.
         </p>
       </div>
       <div class="footer">

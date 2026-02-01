@@ -21,7 +21,7 @@ export const accountApproved = ({ username }) => {
         <p>Your account has been approved. You can now upload, review, and exchange documents easily on xCHnG.</p>
         <a href="${link}" target="_blank" class="btn">Go to Dashboard</a>
         <p>
-          Please contact admin at +91 9849284739 for any questions or concerns.
+          Please contact admin for any questions or concerns.
         </p>
       </div>
       <div class="footer">© 2025 xCHnG</div>

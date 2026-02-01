@@ -78,7 +78,7 @@ export default function PendingApproval() {
           </div>
 
           <p className="text-gray-600 mt-3 text-sm leading-relaxed">
-            Please contact admin at +91 9849284739 for any questions or
+            Please contact admin for any questions or
             concerns.
           </p>
         </CardContent>

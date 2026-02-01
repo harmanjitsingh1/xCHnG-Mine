@@ -11,6 +11,7 @@ import {
   LogOut,
   KeyRound,
   MessageCircleQuestionMark,
+  BadgeInfo
 } from "lucide-react";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { setFoundUser } from "@/store/slices/admin.slice";
@@ -76,7 +77,7 @@ function Profile() {
           </div>
           <div className="truncate">
             <h2 className="text-xl font-semibold text-gray-900 truncate">
-              {userProfile?.username}
+              {userProfile?.username.charAt(0).toUpperCase() + userProfile?.username.slice(1)}
             </h2>
             {userProfile?.email && (
               <p className="text-gray-600 truncate">{userProfile?.email}</p>
@@ -122,7 +123,7 @@ function Profile() {
         <div className="rounded-xl bg-white p-4 shadow-md space-y-3">
           <div className="flex justify-between truncate">
             <span className="text-gray-700 mr-4">Full Name</span>
-            <span className="font-medium truncate">{userProfile?.username}</span>
+            <span className="font-medium truncate">{userProfile?.username.charAt(0).toUpperCase() + userProfile?.username.slice(1)}</span>
           </div>
           <div className="flex justify-between truncate">
             <span className="text-gray-700 mr-4">Role</span>
@@ -156,14 +157,6 @@ function Profile() {
         </h2>
         <div className="rounded-xl bg-white p-4 shadow-md space-y-3">
           <button
-            onClick={() => navigate("/contact")}
-            disabled={buttonLoading}
-            className="flex items-center gap-2 w-full text-left rounded-lg px-4 py-3 bg-gray-50 hover:bg-gray-100 font-medium text-gray-800"
-          >
-            <MessageCircleQuestionMark size={20} />
-            Contact Us
-          </button>
-          <button
             onClick={() => navigate("/reset-password")}
             disabled={buttonLoading}
             className="flex items-center gap-2 w-full text-left rounded-lg px-4 py-3 bg-gray-50 hover:bg-gray-100 font-medium text-gray-800"
@@ -171,6 +164,25 @@ function Profile() {
             <KeyRound size={20} />
             Change Password
           </button>
+
+          <button
+            onClick={() => navigate("/faq")}
+            disabled={buttonLoading}
+            className="flex items-center gap-2 w-full text-left rounded-lg px-4 py-3 bg-gray-50 hover:bg-gray-100 font-medium text-gray-800"
+          >
+            <BadgeInfo size={20} />
+            FAQs
+          </button>
+
+          <button
+            onClick={() => navigate("/contact")}
+            disabled={buttonLoading}
+            className="flex items-center gap-2 w-full text-left rounded-lg px-4 py-3 bg-gray-50 hover:bg-gray-100 font-medium text-gray-800"
+          >
+            <MessageCircleQuestionMark size={20} />
+            Contact Us
+          </button>
+          
           <button
             onClick={() => setShowLogoutModal(true)}
             disabled={buttonLoading}

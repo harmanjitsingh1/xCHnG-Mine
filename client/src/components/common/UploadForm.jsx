@@ -78,19 +78,6 @@ export default function UploadForm({ onUploaded }) {
 
       uploadCancelToken.current = axios.CancelToken.source();
 
-      // const { uploadUrl, fileKey } = res.payload;
-
-      // await axios.put(uploadUrl, file, {
-      //   headers: {
-      //     "Content-Type": file.type,
-      //   },
-      //   onUploadProgress: (progressEvent) => {
-      //     const prog = (progressEvent.loaded / progressEvent.total) * 100;
-      //     setProgress(prog);
-      //   },
-      //   cancelToken: uploadCancelToken.current.token,
-      // });
-
       const { uploadUrl, fileKey } = res.payload;
 
       await axios.put(uploadUrl, file, {

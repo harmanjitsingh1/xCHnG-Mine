@@ -99,7 +99,7 @@ export const userFileRequest = ({
         </p>
         <a href="${link}" target="_blank" class="btn">View Status</a>
         <p>
-          Please contact admin at +91 9849284739 for any questions or concerns.
+          Please contact admin for any questions or concerns.
         </p>
       </div>
       <div class="footer">© 2025 xCHnG</div>
