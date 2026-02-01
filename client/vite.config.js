@@ -54,6 +54,10 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+        // 1. ADD THIS: Ensures the app shell loads for any route while offline
+        navigateFallback: "/index.html", 
+        navigateFallbackDenylist: [/^\/api/], // Don't redirect API calls to index.html
+        
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.mode === "navigate",
