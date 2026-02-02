@@ -6,10 +6,9 @@
     ],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.xchng.app",
+      "package_name": "com.exchange.app",
       "sha256_cert_fingerprints": [
-        "68:86:81:48:AD:6E:B4:BE:0E:A4:24:3B:A4:6E:6C:9A:C0:89:E7:CE:10:98:04:8E:DD:BA:DF:E7:BF:99:17:F5",
-        "83:D9:24:32:87:5F:FC:7A:D9:71:31:36:C5:97:4A:10:A7:24:06:7E:E9:2C:B5:3E:E9:8A:87:F7:6D:FB:45:0C"
+        "8A:9A:81:4F:2E:D4:E5:A4:03:BB:3D:24:A1:FE:A0:DB:F2:F8:DA:AB:53:61:86:0F:C3:81:E4:F8:FD:C1:61:7A"
       ]
     }
   }

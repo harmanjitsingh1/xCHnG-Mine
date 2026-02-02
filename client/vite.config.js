@@ -9,6 +9,9 @@ export default defineConfig({
     tailwindcss(),
     react(),
     VitePWA({
+      strategies: 'injectManifest', // <--- CHANGE THIS
+      srcDir: 'src',                // <--- CHANGE THIS
+      filename: 'sw.js',            // <--- CHANGE THIS
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "apple-touch-icon.png"],
       manifest: {
@@ -52,45 +55,45 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
-        // 1. ADD THIS: Ensures the app shell loads for any route while offline
-        navigateFallback: "/index.html", 
-        navigateFallbackDenylist: [/^\/api/], // Don't redirect API calls to index.html
+      // workbox: {
+      //   globPatterns: ["**/*.{js,css,html,ico,png,svg}"],
+      //   // 1. ADD THIS: Ensures the app shell loads for any route while offline
+      //   navigateFallback: "/index.html", 
+      //   navigateFallbackDenylist: [/^\/api/], // Don't redirect API calls to index.html
         
-        runtimeCaching: [
-          {
-            urlPattern: ({ request }) => request.mode === "navigate",
-            handler: "NetworkFirst",
-            options: {
-              cacheName: "pages-cache",
-              networkTimeoutSeconds: 3,
-            },
-          },
-          {
-            urlPattern: ({ request }) =>
-              request.destination === "script" ||
-              request.destination === "style" ||
-              request.destination === "worker",
-            handler: "StaleWhileRevalidate",
-            options: {
-              cacheName: "assets-cache",
-            },
-          },
-          {
-            urlPattern: ({ request }) =>
-              request.destination === "image" || request.destination === "font",
-            handler: "CacheFirst",
-            options: {
-              cacheName: "static-resources",
-              expiration: {
-                maxEntries: 50,
-                maxAgeSeconds: 30 * 24 * 60 * 60,
-              },
-            },
-          },
-        ],
-      },
+      //   runtimeCaching: [
+      //     {
+      //       urlPattern: ({ request }) => request.mode === "navigate",
+      //       handler: "NetworkFirst",
+      //       options: {
+      //         cacheName: "pages-cache",
+      //         networkTimeoutSeconds: 3,
+      //       },
+      //     },
+      //     {
+      //       urlPattern: ({ request }) =>
+      //         request.destination === "script" ||
+      //         request.destination === "style" ||
+      //         request.destination === "worker",
+      //       handler: "StaleWhileRevalidate",
+      //       options: {
+      //         cacheName: "assets-cache",
+      //       },
+      //     },
+      //     {
+      //       urlPattern: ({ request }) =>
+      //         request.destination === "image" || request.destination === "font",
+      //       handler: "CacheFirst",
+      //       options: {
+      //         cacheName: "static-resources",
+      //         expiration: {
+      //           maxEntries: 50,
+      //           maxAgeSeconds: 30 * 24 * 60 * 60,
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
     }),
   ],
   resolve: {

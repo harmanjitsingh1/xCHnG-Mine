@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
+import NotificationSetup from "@/components/common/NotificationSetup.jsx"
 
 function Profile() {
   const { userProfile, buttonLoading } = useSelector((state) => state.auth);
@@ -156,6 +157,9 @@ function Profile() {
           Settings
         </h2>
         <div className="rounded-xl bg-white p-4 shadow-md space-y-3">
+
+<NotificationSetup />
+
           <button
             onClick={() => navigate("/reset-password")}
             disabled={buttonLoading}
