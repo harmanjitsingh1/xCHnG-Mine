@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage, isSupported } from "firebase/messaging";
+import { API } from "@/lib/axios.js";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbsDD9vFPHENxLtlZelMDOWJIbhGSd1QQ",
@@ -14,24 +16,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 let messaging = null;
 
-// const initMessaging = async () => {
-//   const supported = await isSupported();
-//   console.log(supported)
-//   if (supported) {
-//     messaging = getMessaging(app);
-//   }
-// };
-
 const initMessaging = async () => {
   try {
     const supported = await isSupported();
     console.log("Is Messaging Supported?", supported);
-    
+
     if (supported) {
       messaging = getMessaging(app);
       console.log("Messaging initialized successfully.");
     } else {
-      // Logic to see if the browser itself is the problem
       console.log("Browser Info:", navigator.userAgent);
       console.log("Service Worker in navigator?", 'serviceWorker' in navigator);
       console.log("PushManager in window?", 'PushManager' in window);
@@ -44,11 +37,9 @@ const initMessaging = async () => {
 initMessaging();
 
 
-export const requestNotificationPermission = async () => {
-  console.log("requesting.....");
-  
+export const requestNotificationPermission = async (userId) => {
   if (!messaging) {
-    console.log("Firebase Messaging not supported in this browser/context.");
+    console.error("Firebase Messaging not supported in this browser/context.");
     return null;
   }
 
@@ -60,13 +51,15 @@ export const requestNotificationPermission = async () => {
       const token = await getToken(messaging, {
         vapidKey: "BJHvf_3dacROKGRNfCoNeCrxaMP3u5QvCOBeoly_xOT7KiH7rHUh6Eu_Ik2K8mLm6vk7pyyqKA8df03FLcyMc1U",
         serviceWorkerRegistration: registration,
-        // vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
       });
-      console.log("FCM Token:", token);
+
+      if (token) {
+        await saveTokenToDatabase(userId, token);
+      }
+
       return token;
-      // TODO: Send this token to your backend server to save it for this user
     } else {
-      console.log("Notification permission denied");
+      console.error("Notification permission denied");
       return null;
     }
   } catch (error) {
@@ -75,9 +68,18 @@ export const requestNotificationPermission = async () => {
   }
 };
 
-// Listen for messages when the app is OPEN (Foreground)
+const saveTokenToDatabase = async (userId, token) => {
+  try {
+    const res = await API.post("/notifications/update-fcm-token", { userId, token });
+    return res;
+  } catch (err) {
+    console.error("Failed to sync token with server", err);
+  }
+};
+
 export const onForegroundMessage = () => {
   return new Promise((resolve) => {
+    if (!messaging) return;
     onMessage(messaging, (payload) => {
       resolve(payload);
     });

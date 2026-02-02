@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { API } from "@/lib/axios.js";
+import { requestNotificationPermission } from "@/utils/firebase";
 import toast from "react-hot-toast";
 
 export const signupUserThunk = createAsyncThunk(
@@ -16,6 +17,13 @@ export const signupUserThunk = createAsyncThunk(
         locality,
         password,
       });
+      
+      const userId = res.data?.user?._id;
+      console.log(userId)
+      
+      if (res.data?.success && userId) {
+        await requestNotificationPermission(userId);
+      }
 
       return res.data;
     } catch (error) {
@@ -37,7 +45,17 @@ export const loginUserThunk = createAsyncThunk(
         identifier,
         password,
       });
+
+      const userId = res.data?.user?._id;
+
+      console.log(userId)
+      
+      if (res.data?.success && userId) {
+        await requestNotificationPermission(userId);
+      }
+      
       return res.data;
+
     } catch (error) {
       return rejectWithValue({
         message: error.message,
@@ -54,6 +72,8 @@ export const logoutUserThunk = createAsyncThunk(
   async (rejectWithValue) => {
     try {
       const res = await API.post("/auth/logout");
+
+      
       return res.data;
     } catch (error) {
       return rejectWithValue({
@@ -85,7 +105,7 @@ export const sendResetPassMailThunk = createAsyncThunk(
 
 export const resetPasswordThunk = createAsyncThunk(
   "auth/resetPassword",
-  async ({email, otp, password}, { rejectWithValue }) => {
+  async ({ email, otp, password }, { rejectWithValue }) => {
     try {
       const res = await API.post("/auth/reset-password", { email, otp, password });
       return res.data;
@@ -105,6 +125,13 @@ export const checkAuthThunk = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await API.get("/auth/me");
+
+      const userId = res.data?.user?._id;
+      console.log(userId)
+  
+      if (res.data?.success && userId) {
+        await requestNotificationPermission(userId);
+      }
       return res.data;
     } catch (err) {
       return rejectWithValue(

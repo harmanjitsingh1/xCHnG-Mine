@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import File from "../models/file.model.js";
 import { createNotification } from "../utils/createNotification.js";
 import { sendEmail } from "../services/email.service.js";
+import { sendNotification } from "./notificaton.controller.js";
 
 //  Get Single Request
 export const getRequestById = async (req, res) => {
@@ -198,6 +199,9 @@ export const approveRequest = async (req, res) => {
         select: "username email phone locality",
       });
 
+
+    await sendNotification(request.user?._id, notifyMessage, request.type === 'account' ? "Welcome! Your account has been approved. You now have full access." : `Your request for ${request.type} has been approved. See Details.`)
+
     if (request.user?.email) {
       let template = "";
       let variables = {};
@@ -259,7 +263,7 @@ export const rejectRequest = async (req, res) => {
     const notifyMessage =
       request.type === "account"
         ? "Your account has been rejected."
-        : `Your item request has been rejected.`;
+        : `Your item request was rejected.`;
 
     await createNotification({
       user: request.user._id,
@@ -302,6 +306,8 @@ export const rejectRequest = async (req, res) => {
         model: "User",
         select: "username email phone locality",
       });
+
+    await sendNotification(request.user?._id, notifyMessage, request.type === 'account' ? "Your account registration could not be approved at this time." : `Your request for ${request.type} was not approved. Check the app for details.`)
 
     if (request.user?.email) {
       let template = "";

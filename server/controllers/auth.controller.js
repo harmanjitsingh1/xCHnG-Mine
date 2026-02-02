@@ -87,6 +87,9 @@ export const signup = async (req, res) => {
       request: newRequest._id,
     });
 
+
+    // await sendNotification(request.user?._id, "New User Registration", `${newUser.username} has created a new account and is awaiting approval.`)
+
     if (newUser.email) {
       await sendEmail(
         newUser.email,
@@ -114,6 +117,7 @@ export const signup = async (req, res) => {
       phone: newUser.phone,
       locality: newUser.locality,
       requestId: newRequest._id,
+      type: "account",
       date: new Date(newRequest.createdAt).toLocaleString("en-IN", {
         year: "numeric",
         month: "long",
@@ -365,7 +369,7 @@ export const resetPassword = async (req, res) => {
     await user.save();
 
     forceLogoutUser(user._id, "password_changed");
-    
+
     await Session.updateMany({ userId: user._id }, { valid: false });
 
     return res.status(200).json({
@@ -391,3 +395,4 @@ export const getMe = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+

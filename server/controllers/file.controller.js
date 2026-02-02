@@ -23,42 +23,12 @@ export const getUploadUrl = async (req, res) => {
 
     if (error) throw error;
 
-    // data.signedUrl is the URL for the PUT request
-    // data.token is sometimes required for specific S3 headers,
-    // but usually, the signedUrl carries the auth.
     res.json({ uploadUrl: data.signedUrl, fileKey });
   } catch (error) {
     console.error("Supabase Sign Error:", error);
     res.status(500).json({ message: "Failed to generate upload URL" });
   }
 };
-
-// export const getUploadUrl = async (req, res) => {
-//   try {
-//     const { fileName, fileType } = req.body;
-//     if (!fileName || !fileType) {
-//       return res
-//         .status(400)
-//         .json({ success: false, message: "fileName and fileType is required" });
-//     }
-
-//     const fileKey = `uploads/${Date.now()}-${uuidv4()}-${fileName}`;
-//     // const fileKey = `test/${Date.now()}-${uuidv4()}-${fileName}`;
-
-//     const file = bucket.file(fileKey);
-//     const [uploadUrl] = await file.getSignedUrl({
-//       version: "v4",
-//       action: "write",
-//       expires: Date.now() + 5 * 60 * 1000,
-//       contentType: fileType,
-//     });
-
-//     res.json({ uploadUrl, fileKey });
-//   } catch (error) {
-//     console.error("Upload URL error:", error);
-//     res.status(500).json({ message: "Failed to generate upload URL" });
-//   }
-// };
 
 export const saveMetadata = async (req, res) => {
   try {

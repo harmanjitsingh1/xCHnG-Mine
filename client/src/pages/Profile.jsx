@@ -25,7 +25,7 @@ import {
   AlertDialogTitle,
   AlertDialogDescription,
 } from "@/components/ui/alert-dialog";
-import NotificationSetup from "@/components/common/NotificationSetup.jsx"
+// import NotificationSetup from "@/components/common/NotificationSetup.jsx"
 
 function Profile() {
   const { userProfile, buttonLoading } = useSelector((state) => state.auth);
@@ -63,16 +63,14 @@ function Profile() {
     <main className="flex-1 overflow-y-auto md:px-4 py-6 pb-20">
       <section className="mb-4">
         <div
-          className={`rounded-xl p-6 shadow-md flex items-center gap-4 ${
-            userProfile?.role === "admin"
+          className={`rounded-xl p-6 shadow-md flex items-center gap-4 ${userProfile?.role === "admin"
               ? "bg-gradient-to-r from-blue-50 via-indigo-50 to-blue-50"
               : "bg-gray-50 "
-          }`}
+            }`}
         >
           <div
-            className={`h-16 w-16 aspect-square rounded-full  flex items-center justify-center text-3xl font-bold text-gray-600 ${
-              userProfile?.role === "admin" ? "bg-[#ffffffba]" : "bg-gray-100"
-            }`}
+            className={`h-16 w-16 aspect-square rounded-full  flex items-center justify-center text-3xl font-bold text-gray-600 ${userProfile?.role === "admin" ? "bg-[#ffffffba]" : "bg-gray-100"
+              }`}
           >
             {userProfile?.username?.charAt(0).toUpperCase()}
           </div>
@@ -158,7 +156,7 @@ function Profile() {
         </h2>
         <div className="rounded-xl bg-white p-4 shadow-md space-y-3">
 
-<NotificationSetup />
+          {/* <NotificationSetup /> */}
 
           <button
             onClick={() => navigate("/reset-password")}
@@ -186,7 +184,7 @@ function Profile() {
             <MessageCircleQuestionMark size={20} />
             Contact Us
           </button>
-          
+
           <button
             onClick={() => setShowLogoutModal(true)}
             disabled={buttonLoading}
